@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Chat Clone</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #e5ddd5;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      background: #075e54;
+      color: white;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #25d366;
+    }
+
+    .swiper {
+      height: calc(100vh - 50px);
+    }
+
+    .swiper-slide {
+      height: 100%;
+      overflow-y: auto;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .message {
+      background: #dcf8c6;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 10px;
+      width: fit-content;
+      max-width: 70%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-slide="0">Chats</div>
+  <div class="tab" data-slide="1">Status</div>
+  <div class="tab" data-slide="2">Calls</div>
+</div>
+
+<!-- Swiper -->
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <!-- Chats Tab -->
+    <div class="swiper-slide" id="chatSlide">
+      <div id="chatContainer"></div>
+    </div>
+
+    <!-- Status Tab -->
+    <div class="swiper-slide">
+      <h2>Status Screen</h2>
+    </div>
+
+    <!-- Calls Tab -->
+    <div class="swiper-slide">
+      <h2>Calls Screen</h2>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('.mySwiper', {
+    on: {
+      slideChange: function () {
+        updateActiveTab(swiper.activeIndex);
+      }
+    }
+  });
+
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const slideIndex = parseInt(tab.getAttribute('data-slide'));
+      swiper.slideTo(slideIndex);
+    });
+  });
+
+  function updateActiveTab(index) {
+    tabs.forEach((tab, i) => {
+      tab.classList.toggle('active', i === index);
+    });
+  }
+
+  // === Auto Adding Messages Every Second ===
+  const chatContainer = document.getElementById('chatContainer');
+  let count = 1;
+  setInterval(() => {
+    const msg = document.createElement('div');
+    msg.className = 'message';
+    msg.textContent = `New message ${count++}`;
+    chatContainer.appendChild(msg);
+
+    // Auto-scroll to bottom
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, 1000);
+</script>
+
+</body>
+</html>
